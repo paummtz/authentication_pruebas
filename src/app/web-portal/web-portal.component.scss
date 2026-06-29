@@ -1,0 +1,322 @@
+/* ==========================================
+   CONTENEDOR PRINCIPAL (CORREGIDO)
+   ========================================== */
+.web-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  
+  /* --- CAMBIOS AQUÍ --- */
+  width: 100%;            /* Forzamos a que ocupe todo el ancho disponible */
+  max-width: 100%;        /* Eliminamos el límite de 1200px */
+  margin: 0;              /* Eliminamos el centrado con márgenes laterales */
+  box-sizing: border-box; /* Vital para que el padding de 2rem no rompa la pantalla */
+  /* -------------------- */
+
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+}
+/* ==========================================
+   TARJETAS (CARDS)
+   ========================================== */
+.card-formulario, .card-tabla {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-formulario {
+  flex: 1 1 350px;
+  max-width: 450px;
+}
+
+.card-tabla {
+  flex: 2 1 600px;
+  overflow-x: auto;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 2px solid #edf2f7;
+  padding-bottom: 0.75rem;
+}
+
+ion-icon {
+  font-size: 1.5rem;
+  color: #3498db;
+}
+
+/* ==========================================
+   FORMULARIO (RESET TOTAL CONTRA BORDES NEGROS)
+   ========================================== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="email"] {
+  /* Reseteo agresivo */
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  color-scheme: light !important; 
+  
+  /* Estilos forzados */
+  width: 100% !important;
+  padding: 0.75rem !important;
+  background-color: #ffffff !important;
+  color: #1a202c !important;
+  border: 2px solid #e2e8f0 !important; /* Borde explícito gris claro */
+  border-radius: 8px !important;
+  font-size: 1rem !important;
+  box-sizing: border-box !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus {
+  border-color: #3498db !important;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2) !important;
+}
+
+input::placeholder {
+  color: #a0aec0 !important;
+  opacity: 1 !important;
+}
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+button {
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.2s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-generar {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #3498db;
+  color: white;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn-generar:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+/* ==========================================
+   CONTENEDOR DEL QR
+   ========================================== */
+.qr-container {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e0;
+  border-radius: 12px;
+}
+
+.qr-container h3 {
+  font-size: 1rem;
+  color: #2d3748;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.pin-auxiliar {
+  font-size: 1.1rem;
+  color: #4a5568;
+  margin-top: 1rem;
+}
+
+.pin-auxiliar strong {
+  color: #e53e3e;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+}
+
+/* ==========================================
+   TABLA DE DATOS
+   ========================================== */
+.tabla-validaciones {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-validaciones th {
+  background-color: #f8fafc;
+  color: #718096;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tabla-validaciones td {
+  padding: 1rem;
+  border-bottom: 1px solid #edf2f7;
+  color: #2d3748;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.tabla-validaciones tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-validaciones tr:hover td {
+  background-color: #fcfcfd;
+}
+
+/* ==========================================
+   ESTADOS (BADGES)
+   ========================================== */
+.badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.pendiente {
+  background-color: #feebc8;
+  color: #dd6b20;
+}
+
+.aceptado {
+  background-color: #c6f6d5;
+  color: #2f855a;
+}
+
+.revocado {
+  background-color: #fed7d7;
+  color: #c53030;
+}
+
+/* ==========================================
+   ACCIONES DE LA TABLA
+   ========================================== */
+.verificar-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-pin {
+  width: 90px !important;
+  padding: 0.4rem 0.5rem !important;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.btn-verificar {
+  background-color: #38b2ac;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-verificar:hover {
+  background-color: #319795;
+}
+
+.btn-revocar {
+  background-color: #fff;
+  border: 1px solid #fc8181;
+  color: #e53e3e;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.btn-revocar:hover {
+  background-color: #fed7d7;
+}
+
+.btn-revocar ion-icon {
+  color: #e53e3e;
+  font-size: 1rem;
+}
+
+.texto-bloqueado {
+  color: #a0aec0;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.no-data {
+  text-align: center;
+  color: #a0aec0;
+  padding: 2rem !important;
+  font-style: italic;
+}
+
+/* ==========================================
+   BOTÓN FLOTANTE DEL ESCÁNER (ESQUINA)
+   ========================================== */
+.floating-scanner {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background-color: #3498db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.floating-scanner:hover {
+  transform: scale(1.1);
+  background-color: #2980b9;
+}
+
+.floating-scanner ion-icon {
+  color: white;
+  font-size: 28px;
+  margin: 0; /* Para que quede perfectamente centrado */
+}

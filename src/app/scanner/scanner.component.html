@@ -1,0 +1,50 @@
+<ion-content [class.transparent-bg]="isScanning()">
+  
+  <ion-header class="ion-no-border" [class.ion-hide]="isScanning()">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/web-portal"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Escanear Acceso</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  @if (!isScanning()) {
+    <div class="main-container ion-padding">
+      <div class="welcome-box">
+        <h3>Validador de Accesos</h3>
+        <p>Presiona el botón de abajo para activar la cámara del celular y escanear el código QR del portal.</p>
+      </div>
+
+      <ion-button expand="block" shape="round" color="primary" (click)="startScan()">
+        <ion-icon slot="start" name="camera-outline"></ion-icon>
+        Escanear Código QR
+      </ion-button>
+
+      @if (scannedResult()) {
+        <ion-card class="result-card ion-margin-top">
+          <ion-card-header>
+            <ion-card-title color="success">¡Código Detectado!</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Contenido del QR:</p>
+            <code>{{ scannedResult() }}</code>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+  } 
+  
+  @else {
+    <div class="scan-overlay">
+      <p class="scan-instructions">Apunta con la cámara hacia el código QR</p>
+      
+      <div class="scan-box"></div>
+      
+      <ion-button color="danger" shape="round" class="stop-btn" (click)="stopScan()">
+        Cancelar
+      </ion-button>
+    </div>
+  }
+
+</ion-content>

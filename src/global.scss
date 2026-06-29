@@ -35,3 +35,24 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* =======================================================
+   MAGIA PARA LA CÁMARA: Transparencia total de Ionic
+   ======================================================= */
+body.scanner-active {
+  background: transparent !important;
+}
+
+body.scanner-active ion-app,
+body.scanner-active ion-router-outlet,
+body.scanner-active ion-nav,
+body.scanner-active ion-content {
+  background: transparent !important;
+  --background: transparent !important;
+  opacity: 0 !important; /* Si la cámara sigue sin verse, quita esta línea de opacity, pero suele ayudar a forzar la transparencia de elementos rebeldes */
+}
+
+/* Solo queremos que el contenido del escáner sea visible */
+body.scanner-active app-scanner ion-content {
+  opacity: 1 !important;
+}
