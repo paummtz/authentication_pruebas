@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { 
   IonContent, IonHeader, IonToolbar, IonButtons, 
   IonBackButton, IonButton, IonCard, IonCardHeader, 
-  IonCardTitle, IonCardContent, IonIcon 
+  IonCardTitle, IonCardContent, IonIcon, IonTitle 
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { cameraOutline } from 'ionicons/icons';
@@ -20,7 +20,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
     CommonModule, 
     IonContent, IonHeader, IonToolbar, IonButtons, 
     IonBackButton, IonButton, IonCard, IonCardHeader, 
-    IonCardTitle, IonCardContent, IonIcon
+    IonCardTitle, IonCardContent, IonIcon, IonTitle
   ]
 })
 export class ScannerComponent implements OnDestroy {
