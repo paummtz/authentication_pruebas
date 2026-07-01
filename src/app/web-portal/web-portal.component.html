@@ -1,88 +1,98 @@
-<div class="web-container">
+<ion-content>
 
-  <div class="card-formulario">
-    <h2><ion-icon name="qr-code-outline" slot="start"></ion-icon> Generar Nueva Validación</h2>
-    
-    <div class="form-group">
-      <label>Nombre del Servicio</label>
-      <input type="text" [value]="servicio()" (input)="servicio.set($any($event.target).value)" placeholder="Ej. Netflix, AWS, Banca">
-    </div>
+  <div class="web-container">
 
-    <div class="form-group">
-      <label>Cuenta / Correo electrónico</label>
-      <input type="email" [value]="cuenta()" (input)="cuenta.set($any($event.target).value)" placeholder="Ej. usuario@correo.com">
-    </div>
-
-    <button [disabled]="!esFormularioValido()" (click)="generarQR()" class="btn-generar">
-      Generar Código QR
-    </button>
-
-    @if (ultimoQrGenerado()) {
-      <div class="qr-container">
-        <h3>Escanea este código con tu App Móvil</h3>
-        <qrcode [qrdata]="ultimoQrGenerado()!" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+    <div class="card-formulario">
+      <h2>
+        <ion-icon name="qr-code-outline" slot="start"></ion-icon> 
+        Generar Nueva Validación
+      </h2>
+      
+      <div class="form-group">
+        <label>Nombre del Servicio</label>
+        <input type="text" [value]="servicio()" (input)="servicio.set($any($event.target).value)" placeholder="Ej. Netflix, AWS, Banca">
       </div>
-    }
+
+      <div class="form-group">
+        <label>Cuenta / Correo electrónico</label>
+        <input type="email" [value]="cuenta()" (input)="cuenta.set($any($event.target).value)" placeholder="Ej. usuario@correo.com">
+      </div>
+
+      <button [disabled]="!esFormularioValido()" (click)="generarQR()" class="btn-generar">
+        Generar Código QR
+      </button>
+
+      @if (ultimoQrGenerado()) {
+        <div class="qr-container">
+          <h3>Escanea este código con tu App Móvil</h3>
+          <qrcode [qrdata]="ultimoQrGenerado()!" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+      }
+    </div>
+
+    <div class="card-tabla">
+      <h2>
+        <ion-icon name="apps-outline"></ion-icon> 
+        Panel de Monitoreo de Accesos
+      </h2>
+      
+      <table class="tabla-validaciones">
+        <thead>
+          <tr>
+            <th>Servicio</th>
+            <th>Cuenta</th>
+            <th>Fecha/Hora</th>
+            <th>Estado</th>
+            <th>Acción Web / Verificar</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (req of authState.requests(); track req._id) {
+            <tr>
+              <td><strong>{{ req.servicio }}</strong></td>
+              <td>{{ req.cuenta }}</td>
+              <td>{{ req.hora_fecha | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'pendiente': req.estado === 'Pendiente',
+                  'aceptado': req.estado === 'Aceptado',
+                  'revocado': req.estado === 'Revocado'
+                }">
+                  {{ req.estado }}
+                </span>
+              </td>
+              <td>
+                @if (req.estado === 'Pendiente') {
+                  <div class="verificar-container">
+                    <input type="text" placeholder="Ingresar PIN" (input)="pinIngresado.set($any($event.target).value)" class="input-pin">
+                    <button (click)="validarPin(req)" class="btn-verificar">Validar</button>
+                  </div>
+                }
+                
+                @if (req.estado === 'Aceptado') {
+                  <button (click)="revocar(req._id!)" class="btn-revocar">
+                    <ion-icon name="trash"></ion-icon> Revocar
+                  </button>
+                }
+
+                @if (req.estado === 'Revocado') {
+                  <span class="texto-bloqueado">Acceso Cancelado</span>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="no-data">No hay solicitudes de validación registradas en la base de datos.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
-  <div class="card-tabla">
-    <h2><ion-icon name="apps-outline"></ion-icon> Panel de Monitoreo de Accesos</h2>
-    
-    <table class="tabla-validaciones">
-      <thead>
-        <tr>
-          <th>Servicio</th>
-          <th>Cuenta</th>
-          <th>Fecha/Hora</th>
-          <th>Estado</th>
-          <th>Acción Web / Verificar</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (req of authState.requests(); track req._id) {
-          <tr>
-            <td><strong>{{ req.servicio }}</strong></td>
-            <td>{{ req.cuenta }}</td>
-            <td>{{ req.hora_fecha | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-            <td>
-              <span class="badge" [ngClass]="{
-                'pendiente': req.estado === 'Pendiente',
-                'aceptado': req.estado === 'Aceptado',
-                'revocado': req.estado === 'Revocado'
-              }">
-                {{ req.estado }}
-              </span>
-            </td>
-            <td>
-              @if (req.estado === 'Pendiente') {
-                <div class="verificar-container">
-                  <input type="text" placeholder="Ingresar PIN" (input)="pinIngresado.set($any($event.target).value)" class="input-pin">
-                  <button (click)="validarPin(req)" class="btn-verificar">Validar</button>
-                </div>
-              }
-              
-              @if (req.estado === 'Aceptado') {
-                <button (click)="revocar(req._id!)" class="btn-revocar">
-                  <ion-icon name="trash"></ion-icon> Revocar
-                </button>
-              }
+  <a [routerLink]="['/scanner']" class="floating-scanner" title="Acceder al Escáner">
+    <ion-icon name="camera-outline"></ion-icon>
+  </a>
 
-              @if (req.estado === 'Revocado') {
-                <span class="texto-bloqueado">Acceso Cancelado</span>
-              }
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="5" class="no-data">No hay solicitudes de validación registradas en la base de datos.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-
-</div>
-
-<a [routerLink]="['/scanner']" class="floating-scanner" title="Acceder al Escáner">
-  <ion-icon name="camera-outline"></ion-icon>
-</a>
+</ion-content>
