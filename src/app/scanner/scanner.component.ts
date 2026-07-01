@@ -1,6 +1,13 @@
 import { Component, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+// IMPORTACIÓN MODERNA: Traemos cada componente con sus estilos nativos
+import { 
+  IonContent, IonHeader, IonToolbar, IonButtons, 
+  IonBackButton, IonButton, IonCard, IonCardHeader, 
+  IonCardTitle, IonCardContent, IonIcon 
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { cameraOutline } from 'ionicons/icons';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 @Component({
@@ -8,37 +15,42 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
   templateUrl: './scanner.component.html',
   styleUrls: ['./scanner.component.scss'],
   standalone: true,
-  // ESTO FALTABA: Importar IonicModule para que Angular entienda el HTML
-  imports: [CommonModule, IonicModule]
+  // Pasamos los componentes limpios aquí
+  imports: [
+    CommonModule, 
+    IonContent, IonHeader, IonToolbar, IonButtons, 
+    IonBackButton, IonButton, IonCard, IonCardHeader, 
+    IonCardTitle, IonCardContent, IonIcon
+  ]
 })
 export class ScannerComponent implements OnDestroy {
 
-  // Variables reactivas (Signals) que tu HTML necesita leer
   public isScanning = signal(false);
   public scannedResult = signal<string | null>(null);
 
+  constructor() {
+    // Registramos el ícono de la cámara para que no salga vacío
+    addIcons({ cameraOutline });
+  }
+
   async startScan() {
     try {
-      // 1. Pedimos permiso para usar la cámara
       const status = await BarcodeScanner.checkPermission({ force: true });
       if (!status.granted) {
         alert('Se necesita permiso de la cámara para escanear.');
         return;
       }
 
-      // 2. Preparamos la pantalla transparente para ver la cámara
       BarcodeScanner.hideBackground();
       document.querySelector('body')?.classList.add('scanner-active');
       this.isScanning.set(true);
-      this.scannedResult.set(null); // Limpiamos escaneos anteriores
+      this.scannedResult.set(null);
 
-      // 3. ¡Iniciamos el escáner!
       const result = await BarcodeScanner.startScan();
 
-      // 4. Si detectamos un código QR...
       if (result.hasContent) {
-        this.scannedResult.set(result.content); // Lo guardamos
-        this.stopScan(); // Apagamos la cámara
+        this.scannedResult.set(result.content);
+        this.stopScan();
       }
     } catch (error) {
       console.error('Error al usar el escáner:', error);
@@ -47,7 +59,6 @@ export class ScannerComponent implements OnDestroy {
   }
 
   stopScan() {
-    // Restauramos el fondo blanco normal y apagamos la cámara
     BarcodeScanner.showBackground();
     BarcodeScanner.stopScan();
     document.querySelector('body')?.classList.remove('scanner-active');
@@ -55,7 +66,6 @@ export class ScannerComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Si el usuario sale de la página por accidente, apagamos la cámara
     this.stopScan();
   }
 }
